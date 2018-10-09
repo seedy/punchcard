@@ -1,10 +1,11 @@
 import connect from "react-redux/es/connect/connect";
 import {Card} from "./card";
-import {getPostsByTypeSelector} from "./post.selector";
+import {getCountPostsByTypeSelector, getStatsByTypeSelector} from "./post.selector";
 
 const mapStateToProps = (state, props) => {
   return {
-    posts: getPostsByTypeSelector(state, props.type)
+    stats: getStatsByTypeSelector(state, props),
+    total: getCountPostsByTypeSelector(state, props)
   };
 };
 

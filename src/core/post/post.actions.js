@@ -12,11 +12,11 @@ export function listPost() {
 
 /**
  *
- * @param posts {PostModel[]}
- * @returns {{type: string, payload: PostModel[]}}
+ * @param post {PostModel}
+ * @returns {{type: string, payload: PostModel}}
  */
-export function listPostSuccess(posts) {
-  return {type: LISTPOSTSUCCESS, payload: posts};
+export function listPostSuccess(post) {
+  return {type: LISTPOSTSUCCESS, payload: post};
 }
 
 /**

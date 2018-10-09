@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PostModel from './post.model';
 import {listPost} from "../post/post.actions";
-import {RefreshButton} from "../refresh/refreshButton";
 import CardContainer from './card.container';
 
 class CardList extends Component {
@@ -34,7 +33,6 @@ class CardList extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    posts: state.posts,
     error: state.error
   };
 };

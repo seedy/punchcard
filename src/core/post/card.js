@@ -6,36 +6,45 @@ import moment from 'moment';
 export class Card extends Component {
 
   render() {
-    const rows = this.props.posts.postsByDay.map((obj, index) => {
+    const posts = this.props.stats;
+    const rows = Array.from(Array(7)).map((val, index) => {
       return {
-        id: index.toString(),
+        id: index,
         label: moment().isoWeekday(index).format('ddd'),
-        points: obj.postsByHour.map((number, index) => {
-          return {x: index + 1, y: number};
-        })
+        points: Object.keys(posts).reduce((aggr, stamp) => {
+          const mom = moment(parseInt(stamp));
+          if(mom.isoWeekday() === index + 1) {
+            aggr.push({x: mom.hours(), y: posts[stamp]});
+          }
+          return aggr;
+        }, [])
       };
     });
     return (
-      <PunchCard value={rows}/>
+      <div>
+        <h3>Type {this.props.type} - Total {this.props.total}</h3>
+        <ul>
+          {rows.map((row) => (
+            <li key={row.id}>
+              <h3>{row.label}</h3>
+              {row.points.map((point) => (
+                <span key={point.x}>[{point.x} - {point.y}]</span>
+              ))}
+            </li>
+          ))}
+        </ul>
+      </div>
     )
   }
 }
 
 Card.propTypes = {
   type: PropTypes.oneOf(PostModel.types),
-  posts: PropTypes.shape({
-    posts: PropTypes.arrayOf(PropTypes.instanceOf(PostModel)),
-    postsByDay: PropTypes.arrayOf(
-      PropTypes.shape({
-        count: PropTypes.number,
-        postsByHour: PropTypes.arrayOf(PropTypes.number)
-      })
-    )
-  })
+  stats: PropTypes.any,
+  total: PropTypes.number
 };
+
 Card.defaultProps = {
-  posts: {
-    posts: [],
-    postsByDay: new Array(7).fill({count: 0, postsByHour: new Array(24).fill(0)})
-  }
+  stats: {},
+  total: 0
 };
